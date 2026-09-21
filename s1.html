@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>09ENG Language & Literature | Prof. Sterling (Room 813A)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+            display: ['Cinzel', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            vsa: {
+              navy: '#0d2238',
+              gold: '#c29b38',
+              crimson: '#8a1c14',
+              parchment: '#fcfaf3',
+              border: '#e7dfce',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <header class="w-full vsa-header">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-full crest-badge flex items-center justify-center text-lg font-display">
+          VSA
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-widest text-amber-300 font-mono font-medium">Victoria Shanghai Academy • 19 Shum Wan Road</div>
+          <h1 class="text-base sm:text-lg font-serif font-bold text-white tracking-wide">English Department • Year 9 (09ENG)</h1>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3 text-xs font-mono">
+        <span class="bg-blue-950/80 border border-amber-400/30 px-3 py-1.5 rounded-full flex items-center gap-2 text-amber-200 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Room 813A (8/F Nam Long Shan Wing)
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl mb-8 shadow-sm flex items-start gap-3.5">
+      <div class="text-amber-600 mt-0.5 shrink-0">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-wider font-mono font-semibold text-amber-900">Faculty Announcement • 09ENG Autumn Term Portal v1.0.4</p>
+        <p class="text-sm text-stone-700 mt-0.5 leading-relaxed font-serif">
+          <em>"Welcome, Year 9 scholars. I have spent my weekend in Room 813A crafting this syllabus hub in Apple TextEdit. Whether analyzing Hansberry's dreams or Owen's war aesthetics, precision of language is paramount. Do not leave loose notebook leaves on my desk!"</em>
+          <span class="block font-medium text-stone-900 mt-1 font-sans text-xs">— Professor Arthur Sterling, Room 813A</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Main Syllabus & Curriculum Units Section -->
+      <section class="lg:col-span-2 paper-card p-6 sm:p-8 relative overflow-hidden">
+        <div class="inline-block px-3 py-1 bg-amber-100 border border-amber-200 text-amber-900 text-xs font-mono font-semibold rounded-full mb-3">
+          Course ID: 09ENG • Language & Literature (MYP Year 4)
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-[#0d2238] tracking-tight mb-3">
+          Syllabus & Core Texts: Perspectives, Aesthetics & Culture
+        </h2>
+        <p class="text-stone-600 leading-relaxed font-serif text-sm sm:text-base mb-6">
+          Exploring how cultural and historical contexts shape personal ambition, poetic craft, and communal identities—from Lorraine Hansberry's Chicago to Wilfred Owen's trenches and Yukio Mishima's coastal tides.
+        </p>
+
+        <!-- Authentic MYP Unit Overview Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="p-4 rounded-xl border border-stone-200 bg-white shadow-sm">
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-800">Unit 1: Drama & Context</span>
+            <h4 class="font-serif font-bold text-stone-900 mt-1 text-sm">A Raisin in the Sun & Of Mice and Men</h4>
+            <p class="text-xs text-stone-600 mt-1.5 font-serif leading-relaxed">
+              <strong>Statement of Inquiry:</strong> The value and purpose of dreams and ambition is dependent on historical, social and cultural contexts.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-stone-200 bg-white shadow-sm">
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-800">Unit 2: Aesthetics & Craft</span>
+            <h4 class="font-serif font-bold text-stone-900 mt-1 text-sm">Songs & Poetry of Conflict</h4>
+            <p class="text-xs text-stone-600 mt-1.5 font-serif leading-relaxed">
+              <strong>Statement of Inquiry:</strong> A critical understanding of aesthetics (structure, style, and craft) enhances our appreciation of artistry and creation.
+            </p>
+          </div>
+        </div>
+
+        <h3 class="text-xs uppercase font-mono font-bold tracking-wider text-stone-500 mb-3 flex items-center gap-2">
+          <span>Weekly Lecture Modules & Assessment Timeline</span>
+          <span class="h-px bg-stone-300 flex-grow"></span>
+        </h3>
+        <div class="overflow-x-auto border border-stone-200 rounded-xl bg-white shadow-sm mb-6">
+          <table class="w-full text-left text-xs sm:text-sm scholarly-table">
+            <thead class="border-b border-stone-200">
+              <tr>
+                <th class="py-3 px-3.5">Week</th>
+                <th class="py-3 px-3.5">Unit & Anchor Text</th>
+                <th class="py-3 px-3.5">Focus Area</th>
+                <th class="py-3 px-3.5">Assessment Focus</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-200 font-serif text-stone-700">
+              <tr>
+                <td class="py-3 px-3.5 font-mono font-semibold text-stone-900">01</td>
+                <td class="py-3 px-3.5">Hansberry — A Raisin in the Sun</td>
+                <td class="py-3 px-3.5 text-stone-500">Characterisation & Dreams</td>
+                <td class="py-3 px-3.5"><span class="px-2 py-0.5 text-[10px] font-mono bg-emerald-100 text-emerald-800 rounded">Criterion A</span></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3.5 font-mono font-semibold text-stone-900">02</td>
+                <td class="py-3 px-3.5">Brooke vs. Owen — Conflict Poetry</td>
+                <td class="py-3 px-3.5 text-stone-500">The Soldier vs. Dulce et Decorum Est</td>
+                <td class="py-3 px-3.5"><span class="px-2 py-0.5 text-[10px] font-mono bg-amber-100 text-amber-800 rounded">Oral IOC</span></td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3.5 font-mono font-semibold text-stone-900">03</td>
+                <td class="py-3 px-3.5">Yukio Mishima — The Sound of Waves</td>
+                <td class="py-3 px-3.5 text-stone-500">Setting, Ocean & Community</td>
+                <td class="py-3 px-3.5"><span class="px-2 py-0.5 text-[10px] font-mono bg-indigo-100 text-indigo-800 rounded">Criterion B & D</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-xs text-stone-500 italic font-serif">
+          * Notice: Oral Commentary recordings for Unit 2 must be scheduled via Room 813A before Thursday faculty lunch.
+        </p>
+      </section>
+
+      <aside class="space-y-6">
+        <!-- Admin Login Section -->
+        <div class="paper-card p-5 border-2 border-stone-300/80 bg-[#fdfcf9]">
+          <div class="flex items-center space-x-2.5 pb-2.5 border-b border-stone-200 mb-3.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+            <h3 class="font-serif font-bold text-stone-900 text-sm">Faculty Admin Login</h3>
+          </div>
+          <p class="text-xs text-stone-600 font-serif mb-4 leading-relaxed">
+            Restricted access for Professor Sterling & Brick Hill Society curriculum examiners.
+          </p>
+
+          <form id="adminForm" onsubmit="handleAdminSubmit(event)" class="space-y-3">
+            <div>
+              <label for="adminUser" class="block text-[10px] font-mono uppercase tracking-wider text-stone-600 font-semibold mb-1">
+                Faculty Passcode:
+              </label>
+              <input 
+                type="password" 
+                id="adminUser" 
+                placeholder="Enter 813A faculty passphrase..." 
+                class="w-full px-3 py-1.5 text-xs border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+            </div>
+
+            <!-- ========================================================================================================= -->
+            <!-- Sterling Note: Must migrate the 2005 Foundation Survey to the encrypted drive before Thursday lunch at the Aberdeen Boat Club! -->
+            <!-- Temporary Admin Override Passcode: VSA{html_c0mm3nts_4r3_n0t_s3cr3ts} -->
+            <!-- ========================================================================================================= -->
+
+            <button 
+              type="submit" 
+              class="w-full py-2 bg-[#0d2238] text-amber-200 font-mono text-xs font-bold rounded-lg border border-amber-500 shadow-sm hover:bg-[#153454] transition cursor-pointer">
+              Authenticate Admin
+            </button>
+          </form>
+
+          <div id="loginFeedback" class="hidden mt-3 p-3 rounded-lg border text-xs font-mono"></div>
+        </div>
+
+        <!-- Samsung the Cat Widget -->
+        <div class="paper-card p-5">
+          <div class="flex items-center space-x-3.5 mb-3.5">
+            <div class="w-12 h-12 rounded-full bg-stone-200 flex items-center justify-center text-2xl border border-stone-300 shadow-inner">
+              🐈‍⬛
+            </div>
+            <div>
+              <h4 class="font-serif font-bold text-stone-900 leading-tight">Samsung the Cat</h4>
+              <p class="text-xs text-stone-500 font-mono">Resident Mascot of Room 813A</p>
+            </div>
+          </div>
+          <p class="text-xs text-stone-600 font-serif leading-relaxed mb-3.5">
+            Current status: Snoozing soundly across the copy of <em>A Raisin in the Sun</em> on the window ledge overlooking the Aberdeen South Channel.
+          </p>
+          <div class="bg-amber-50 rounded-xl p-3 border border-amber-200/60 text-xs">
+            <span class="font-semibold text-amber-900 block font-mono text-[11px] uppercase tracking-wider mb-1">Dietary Advisory:</span>
+            <span class="text-stone-700 leading-normal">Samsung strictly ignores cafeteria snacks. Do not attempt to awaken unless carrying grade-A <em>Otoro</em> tuna sashimi from Sushiro (One Island South / Wong Chuk Hang).</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="w-full border-t border-stone-300/80 bg-[#f2ede2] py-5 text-center text-xs font-serif text-stone-500">
+    <p class="font-medium text-stone-700">Victoria Shanghai Academy • English Department • Room 813A</p>
+    <p class="text-[11px] font-mono text-stone-400 mt-1">Built with Apple TextEdit • Course 09ENG • 19 Shum Wan Road, Aberdeen</p>
+  </footer>
+
+  <script>
+    function handleAdminSubmit(event) {
+      event.preventDefault();
+      const input = document.getElementById('adminUser').value;
+      const feedback = document.getElementById('loginFeedback');
+      feedback.classList.remove('hidden');
+
+      if (input === 'VSA{html_c0mm3nts_4r3_n0t_s3cr3ts}') {
+        feedback.className = 'mt-3 p-3 rounded-lg border bg-emerald-50 border-emerald-300 text-emerald-900 text-xs font-mono';
+        feedback.innerHTML = '<strong>Access Confirmed.</strong> Welcome, Professor Sterling. Room 813A Gradebook & 2005 Archival Records Unlocked.';
+      } else {
+        feedback.className = 'mt-3 p-3 rounded-lg border bg-rose-50 border-rose-300 text-rose-900 text-xs font-mono';
+        feedback.innerHTML = '<strong>Access Denied.</strong> Passcode unverified. Professor Sterling notes: "Inspect the structure carefully, scholar!"';
+      }
+    }
+  </script>
+</body>
+</html>
