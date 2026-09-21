@@ -53,14 +53,14 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
-    <div class="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl mb-8 shadow-sm flex items-start gap-3.5">
-      <div class="text-amber-700 mt-0.5 shrink-0">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+    <div class="bg-amber-50 border-l-4 border-emerald-600 p-4 rounded-r-xl mb-8 shadow-sm flex items-start gap-3.5">
+      <div class="text-emerald-700 mt-0.5 shrink-0">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/></svg>
       </div>
       <div>
-        <p class="text-[11px] uppercase tracking-wider font-mono font-semibold text-amber-900">Faculty Announcement • Module Hub v1.2.0 (Access Gate Deployed)</p>
+        <p class="text-[11px] uppercase tracking-wider font-mono font-semibold text-emerald-900">Faculty Announcement • Module Hub v1.1.0 (Security Patch)</p>
         <p class="text-sm text-stone-700 mt-0.5 leading-relaxed font-serif">
-          <em>"I have purged all cloaked text. In its place stands an official digital gateway. Only authorized Brick Hill Society wardens may depress this button. It has been deactivated by digital decree using official browser specifications!"</em>
+          <em>"A student pointed out during homeroom that anyone could view my source code notes. Fret not! I have deployed advanced cascading stylesheets to completely cloak the sensitive archival section. If the human eye cannot perceive it, the machine cannot yield it!"</em>
           <span class="block font-medium text-stone-900 mt-1 font-sans text-xs">— Professor Arthur Sterling, Room 813A</span>
         </p>
       </div>
@@ -74,30 +74,21 @@
         <h2 class="text-2xl sm:text-3xl font-serif font-bold text-[#0d2238] tracking-tight mb-3">
           The Sea Sanctuaries: Corsair Verse & Coastal Ballads
         </h2>
-        <p class="text-stone-600 leading-relaxed font-serif text-sm sm:text-base mb-6">
-          Exploring the coastal history of Shum Wan, Ap Lei Chau, and the 1809 Haven Treaty. All archival board documents are maintained under strict society oversight.
+        <p class="text-stone-600 leading-relaxed font-serif text-sm sm:text-base mb-4">
+          From the mist-shrouded granite slopes of <strong>Nam Long Shan (Brick Hill)</strong> to the moorings of the <strong>Aberdeen South Channel</strong>, this course investigates the intersection between 19th-century romantic poetry and the oral traditions of the South China coastal fleets.
         </p>
 
-        <div class="my-6 p-5 rounded-xl border border-stone-300 bg-stone-50 shadow-inner">
-          <h4 class="font-mono text-xs font-bold uppercase tracking-wider text-stone-700 mb-1 flex items-center gap-2">
-            <svg class="w-4 h-4 text-stone-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 016 0zm-3 9a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
-            Brick Hill Society Archive Dispatcher
-          </h4>
-          <p class="text-xs text-stone-600 font-serif mb-4 leading-relaxed">
-            Faculty archive terminal linked to the 2004–2007 foundation records. Non-warden interaction is blocked by client attribute lock.
-          </p>
-
-          <div class="flex flex-wrap items-center gap-3">
-            <button
-              id="vaultBtn"
-              disabled
-              class="px-4 py-2.5 bg-[#0d2238] text-amber-200 cursor-pointer font-mono text-xs font-semibold rounded-lg border border-amber-500 shadow-md transition hover:bg-[#153454]">
-              Authorized Wardens Only
-            </button>
-            <span class="text-[11px] font-mono text-stone-400 italic">Status: Button Disabled in DOM</span>
+        <div id="brick-hill-archive" style="display: none;" class="my-6 p-4 rounded-xl border border-amber-300 bg-amber-50/90 shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+            <h4 class="font-mono text-xs font-bold uppercase tracking-wider text-amber-900">Brick Hill Society • Classified Archive Section</h4>
           </div>
-
-          <div id="vault-status-box" class="hidden mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-300 text-xs"></div>
+          <p class="text-xs font-serif text-stone-700 leading-relaxed mb-2">
+            Notice to Archival Wardens: The Foundational Volume I survey from the 2004–2007 construction has been temporarily relocated behind the 4/F secondary service hatch due to dampness in the lower plant room.
+          </p>
+          <div class="p-2.5 bg-white border border-amber-200 rounded-lg text-xs font-mono text-stone-800">
+            Access Volume I Clearance Token: <span class="font-bold text-rose-800">VSA{css_is_not_cryptography_02}</span>
+          </div>
         </div>
 
         <h3 class="text-xs uppercase font-mono font-bold tracking-wider text-stone-500 mb-3 flex items-center gap-2">
@@ -150,11 +141,11 @@
             </div>
           </div>
           <p class="text-xs text-stone-600 font-serif leading-relaxed mb-3.5">
-            Current status: Curled up next to the vintage globe on the back credenza, entirely uninterested in button permissions.
+            Current status: Observing the Wong Chuk Hang rain clouds from the bookshelf above the poetry anthology.
           </p>
           <div class="bg-amber-50 rounded-xl p-3 border border-amber-200/60 text-xs">
             <span class="font-semibold text-amber-900 block font-mono text-[11px] uppercase tracking-wider mb-1">Dietary Advisory:</span>
-            <span class="text-stone-700 leading-normal">A fresh tray of <em>Chutoro</em> or <em>Otoro</em> from Wong Chuk Hang Sushiro remains the only currency recognized in Room 813A.</span>
+            <span class="text-stone-700 leading-normal">Requires fresh <em>Otoro</em> tuna from Sushiro (One Island South). Treats placed inside closed drawers will be swatted open without remorse.</span>
           </div>
         </div>
 
@@ -175,8 +166,8 @@
             <span class="text-amber-900 font-bold">09ENG</span>
           </div>
           <div class="flex justify-between text-stone-600">
-            <span>Button Lock:</span>
-            <span class="text-amber-800 font-medium">disabled attribute</span>
+            <span>Style Strategy:</span>
+            <span class="text-emerald-800 font-medium">CSS Display-None Cloak</span>
           </div>
         </div>
       </aside>
@@ -187,51 +178,6 @@
     <p class="font-medium text-stone-700">Victoria Shanghai Academy • English Department • Room 813A</p>
     <p class="text-[11px] font-mono text-stone-400 mt-1">Built with Apple TextEdit • Course 09ENG • 19 Shum Wan Road, Aberdeen</p>
   </footer>
-
-  <script>
-    const vaultContent = {
-      title: 'Warden Authorization Confirmed',
-      message: 'Welcome, Chief Archivist. You now have access to the lower meeting space.',
-      key: [
-        '3-1.png',
-        '3-2a.png',
-        '3-2z.png',
-        '3-2y.png',
-        '3-2b.png',
-        '3-3.png'
-      ]
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const vaultBtn = document.getElementById('vaultBtn');
-      const vaultStatusBox = document.getElementById('vault-status-box');
-
-      if (!vaultBtn || !vaultStatusBox) return;
-
-      vaultBtn.addEventListener('click', () => {
-        const keyHtml = vaultContent.key
-          .map((src) => (
-            '<img src="' + src + '" alt="" style="display:block; margin:0; padding:0; width:auto; height:auto; max-width:none; max-height:none;">'
-          ))
-          .join('');
-
-        vaultStatusBox.innerHTML = `
-          <div class="flex items-center gap-2 text-emerald-900 font-bold font-mono uppercase tracking-wide mb-1">
-            <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-            ${vaultContent.title}
-          </div>
-          <p class="text-stone-700 font-serif leading-relaxed mb-2">
-            ${vaultContent.message}
-          </p>
-          <div class="p-2 bg-white rounded border border-emerald-200 font-mono text-emerald-950 font-semibold flex items-center gap-0">
-            <span class="inline-flex leading-none">${keyHtml}</span>
-          </div>
-        `;
-
-        vaultStatusBox.classList.remove('hidden');
-      });
-    });
-  </script>
 
 </body>
 </html>
