@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operation Black Book: Cryptography Challenges</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#070b12',
+            cardBg: '#0f172a',
+            panelBg: '#131d35',
+            gold: '#f59e0b',
+            cyberCyan: '#06b6d4',
+            emeraldGlow: '#10b981',
+            crimson: '#f43f5e',
+            neonPurple: '#a855f7',
+          },
+          fontFamily: {
+            mono: ['SF Mono', 'Fira Code', 'Courier New', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #070b12;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.03) 0%, transparent 40%),
+        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    }
+
+    .scanline {
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.3) 50%
+      ), linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.02),
+        rgba(0, 255, 0, 0.01),
+        rgba(0, 0, 255, 0.02)
+      );
+      background-size: 100% 4px, 6px 100%;
+    }
+
+    pre code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between p-3 sm:p-6 md:p-8">
+
+  <!-- Main Container -->
+  <div class="max-w-6xl mx-auto w-full">
+    
+    <!-- Top Header -->
+    <header class="border-b border-slate-800 pb-6 mb-6">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-cyberCyan animate-pulse"></span>
+            <span class="font-mono text-xs uppercase tracking-widest text-cyberCyan font-bold">Cryptanalysis Operations</span>
+            <span class="text-slate-700 font-mono text-xs">|</span>
+            <span class="font-mono text-xs uppercase text-gold font-bold">Zero-Assistance Active</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+            <span>Operation Black Book</span>
+            <span class="text-xs font-mono font-normal px-2.5 py-1 rounded bg-slate-800 text-gold border border-gold/30">
+              CRYPTOGRAPHY LAB
+            </span>
+          </h1>
+          <p class="text-slate-400 text-sm mt-1 max-w-2xl">
+            Five intercepted encrypted transmissions from an elusive hacker syndicate. You must perform the cryptanalysis yourself using your browser console, Python, or logical deduction.
+          </p>
+        </div>
+
+        <!-- Clearance Meter -->
+        <div class="bg-cardBg border border-slate-800 rounded-xl p-4 min-w-[240px] shadow-lg">
+          <div class="flex justify-between items-center text-xs font-mono text-slate-400 mb-1.5">
+            <span>CLEARANCE PROGRESS</span>
+            <span id="progressText" class="text-cyberCyan font-bold">0 / 5 SOLVED</span>
+          </div>
+          <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-700/50 mb-2">
+            <div id="progressBar" class="bg-gradient-to-r from-cyberCyan to-emeraldGlow h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+          <div class="flex justify-between text-[11px] font-mono">
+            <span class="text-slate-500">Rank: <span id="tierRank" class="text-slate-300 font-semibold">Initiate</span></span>
+            <span class="text-emeraldGlow font-semibold cursor-pointer" onclick="toggleAudio()" id="audioToggle">🔊 Audio ON</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs: Challenges vs Knowledge Banks -->
+      <nav class="flex flex-wrap gap-2 mt-6 border-t border-slate-800/80 pt-4">
+        <button onclick="switchView('challenges')" id="viewBtnChallenges" class="px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cyberCyan/15 border-cyberCyan text-cyberCyan shadow-sm transition-all">
+          <span>🎯 Missions & Puzzles</span>
+        </button>
+
+        <button onclick="switchView('mechanics')" id="viewBtnMechanics" class="px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white transition-all">
+          <span>📖 Cipher Mechanics</span>
+        </button>
+
+        <button onclick="switchView('python')" id="viewBtnPython" class="px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white transition-all">
+          <span>🐍 Python Toolkit</span>
+        </button>
+
+        <button onclick="switchView('javascript')" id="viewBtnJavascript" class="px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white transition-all">
+          <span>⚡ JS Console Toolkit</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: MISSIONS & PUZZLES                -->
+    <!-- ========================================== -->
+    <main id="viewChallenges" class="space-y-6">
+      
+      <!-- Stage Tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        <button onclick="switchStage(1)" id="tabBtn1" class="stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cyberCyan/10 border-cyberCyan text-cyberCyan">
+          <span class="w-5 h-5 rounded-full bg-cyberCyan/20 flex items-center justify-center text-[10px]">1</span>
+          <span>I. Caesar Shift</span>
+          <span id="badge1" class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">UNSOLVED</span>
+        </button>
+
+        <button onclick="switchStage(2)" id="tabBtn2" class="stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700">
+          <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">2</span>
+          <span>II. Atbash Mirror</span>
+          <span id="badge2" class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">UNSOLVED</span>
+        </button>
+
+        <button onclick="switchStage(3)" id="tabBtn3" class="stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700">
+          <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">3</span>
+          <span>III. Vigenère Cipher</span>
+          <span id="badge3" class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">UNSOLVED</span>
+        </button>
+
+        <button onclick="switchStage(4)" id="tabBtn4" class="stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700">
+          <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">4</span>
+          <span>IV. Byte Pipeline</span>
+          <span id="badge4" class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">UNSOLVED</span>
+        </button>
+
+        <button onclick="switchStage(5)" id="tabBtn5" class="stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700">
+          <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">5</span>
+          <span>V. The RSA Vault</span>
+          <span id="badge5" class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">UNSOLVED</span>
+        </button>
+      </div>
+
+      <!-- Challenge Layout Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Dossier & Flag Submission (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+              <span id="stageCategoryBadge" class="text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-cyberCyan/10 text-cyberCyan border border-cyberCyan/30">
+                CATEGORY: CAESAR SHIFT
+              </span>
+              <span id="stageDifficultyBadge" class="text-xs font-mono font-bold px-2 py-0.5 rounded text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                TIER 1 • NOVICE
+              </span>
+            </div>
+
+            <h2 id="stageTitle" class="text-2xl font-bold text-white mb-2">Chapter 1: The Centurion's Crypt</h2>
+            <p id="stageStory" class="text-slate-300 text-sm leading-relaxed mb-4">
+              An intercepted message sent between field operatives. The characters are shifted by an unknown offset. Find the secret key and recover the plaintext.
+            </p>
+
+            <!-- Intercepted Cipher Display -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-gold"></span>
+                  Intercepted Ciphertext
+                </span>
+                <button onclick="copyCurrentCipher()" class="text-xs font-mono text-cyberCyan hover:underline">
+                  📋 Copy Ciphertext
+                </button>
+              </div>
+
+              <div id="cipherDisplay" class="bg-obsidian border border-slate-700/80 rounded-xl p-4 font-mono text-sm sm:text-base text-gold tracking-wide break-words select-all scanline">
+                AOL LHNSL MSPLZ HA TPKUPNOA. AOL ZLJYLA WHZZRLF PZ MSHN{QBSPBZ_RULD_AOL_HSWOHILA}
+              </div>
+            </div>
+
+            <!-- Analysis & Hints (Guidance without giving answers) -->
+            <div class="mt-4 pt-4 border-t border-slate-800">
+              <button onclick="toggleClue()" class="text-xs font-mono text-slate-400 hover:text-cyberCyan flex items-center gap-1.5 transition-colors">
+                <span id="clueArrow">▶</span>
+                <span class="font-bold">ANALYST FIELD HINT (CLICK TO EXPAND)</span>
+              </button>
+              <div id="clueContent" class="hidden mt-2 p-3.5 bg-slate-900/90 rounded-lg text-xs font-mono text-slate-300 border border-slate-800 leading-relaxed">
+                Notice the repeated 3-letter word "AOL". In English, the most common 3-letter word is "THE". What shift turns 'A' into 'T' or 'T' into 'A'? Or use the Caesar Brute-Forcer in the Python / JS tabs to print all 25 shifts at once!
+              </div>
+            </div>
+          </div>
+
+          <!-- Flag Submission Box -->
+          <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h3 class="text-sm font-mono font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+              <span>🔑</span> Submit Recovered Flag
+            </h3>
+            <p class="text-xs text-slate-400 mb-3">
+              Enter the exact flag enclosed in <code class="text-cyberCyan font-mono">FLAG{...}</code> or the plain decrypted phrase.
+            </p>
+
+            <form onsubmit="handleFlagSubmit(event)" class="space-y-3">
+              <div class="relative">
+                <input 
+                  type="text" 
+                  id="flagInput" 
+                  placeholder="FLAG{...}" 
+                  autocomplete="off" 
+                  class="w-full bg-obsidian border border-slate-700 focus:border-cyberCyan focus:ring-1 focus:ring-cyberCyan rounded-xl px-4 py-3 font-mono text-sm text-white placeholder-slate-600 transition-all outline-none"
+                />
+                <button 
+                  type="submit" 
+                  class="absolute right-2 top-2 bottom-2 px-5 bg-cyberCyan hover:bg-cyan-400 text-obsidian font-bold rounded-lg text-xs sm:text-sm font-mono tracking-wider transition-transform active:scale-95 shadow-md flex items-center gap-1">
+                  <span>VERIFY</span>
+                  <span>➔</span>
+                </button>
+              </div>
+              <div id="resultFeedback" class="hidden rounded-xl p-3 font-mono text-xs sm:text-sm transition-all"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Cryptanalyst Scratchpad & Quick Tooling (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 shadow-xl sticky top-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
+                <span>📝</span> Cryptanalyst Workspace
+              </h3>
+              <span class="text-[11px] font-mono text-slate-400">Manual Scratchpad</span>
+            </div>
+
+            <!-- Jump Links to Knowledge Banks -->
+            <div class="bg-obsidian border border-slate-800 rounded-xl p-3.5 mb-4 text-xs font-mono space-y-2">
+              <div class="text-gold font-bold">RESOURCES FOR THIS CIPHER:</div>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="switchView('mechanics')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-cyberCyan rounded border border-slate-700 transition-colors">
+                  📖 View Mechanics
+                </button>
+                <button onclick="switchView('python')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emeraldGlow rounded border border-slate-700 transition-colors">
+                  🐍 Python Solver
+                </button>
+                <button onclick="switchView('javascript')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded border border-slate-700 transition-colors">
+                  ⚡ JS Console Code
+                </button>
+              </div>
+            </div>
+
+            <!-- Notes & Workspace -->
+            <div>
+              <label class="text-xs font-mono text-slate-300 uppercase block mb-1 font-bold">In-Memory Notes & Drafts</label>
+              <textarea 
+                id="scratchpadArea" 
+                rows="8" 
+                placeholder="Use this scratchpad to test letter substitutions, jot down key lengths, or record intermediate outputs. (Notes stay saved in your current session)."
+                class="w-full bg-obsidian border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-200 placeholder-slate-600 focus:border-cyberCyan outline-none resize-none"
+              ></textarea>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>External heavy solver:</span>
+              <a href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener noreferrer" class="text-cyberCyan hover:underline font-bold">
+                CyberChef ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: CIPHER MECHANICS (THEORY)          -->
+    <!-- ========================================== -->
+    <section id="viewMechanics" class="hidden space-y-6">
+      <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+        <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+          <span>📖</span> Cipher Mechanics & Theory
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Theoretical foundations, mathematical equations, and worked examples for classical and modern ciphers.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Caesar -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-gold">1. The Caesar Shift Cipher</h3>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Substitution</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            The Caesar cipher shifts each letter in the alphabet by a fixed integer $k$ between 1 and 25. Because the English alphabet wraps around from Z back to A, this is computed using modular arithmetic:
+          </p>
+          <div class="bg-obsidian border border-slate-800 p-3 rounded-xl font-mono text-xs text-cyberCyan">
+            Encryption: C = (P + k) mod 26<br/>
+            Decryption: P = (C - k + 26) mod 26
+          </div>
+          <div class="text-xs text-slate-400 font-mono space-y-1">
+            <div class="text-white font-bold">Example with Shift k = 3:</div>
+            <div>Plaintext: <span class="text-emeraldGlow">H E L L O</span></div>
+            <div>H(7) + 3 = K(10) | E(4) + 3 = H(7) | L(11) + 3 = O(14) | O(14) + 3 = R(17)</div>
+            <div>Ciphertext: <span class="text-gold">K H O O R</span></div>
+          </div>
+          <p class="text-xs text-slate-400">
+            <strong>Cryptanalysis Tip:</strong> There are only 25 possible non-trivial shifts. A computer script can check all 25 shifts simultaneously in less than 1 millisecond.
+          </p>
+        </div>
+
+        <!-- Atbash -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-cyberCyan">2. The Atbash Mirror Cipher</h3>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Reciprocal</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Originally created for the Hebrew alphabet, Atbash is a monoalphabetic substitution cipher where the alphabet is inverted: the first letter maps to the last letter, the second maps to the second-to-last, and so on.
+          </p>
+          <div class="bg-obsidian border border-slate-800 p-3 rounded-xl font-mono text-xs text-emeraldGlow">
+            Mapping Equation: Index_C = 25 - Index_P<br/>
+            [A ↔ Z] [B ↔ Y] [C ↔ X] [D ↔ W] [E ↔ V] ... [M ↔ N]
+          </div>
+          <div class="text-xs text-slate-400 font-mono space-y-1">
+            <div class="text-white font-bold">Example:</div>
+            <div>Plaintext: <span class="text-emeraldGlow">F L A G</span></div>
+            <div>F ↔ U, L ↔ O, A ↔ Z, G ↔ T</div>
+            <div>Ciphertext: <span class="text-gold">U O Z T</span></div>
+          </div>
+          <p class="text-xs text-slate-400">
+            <strong>Self-Inverting Property:</strong> Encrypting and decrypting are the exact same operation. Passing ciphertext through the Atbash transform a second time restores the plaintext.
+          </p>
+        </div>
+
+        <!-- Vigenere -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-emeraldGlow">3. The Vigenère Cipher</h3>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Polyalphabetic</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            The Vigenère cipher resists simple frequency analysis by using a repeating keyword where each letter dictates a different Caesar shift for each character of the message.
+          </p>
+          <div class="bg-obsidian border border-slate-800 p-3 rounded-xl font-mono text-xs text-amber-300">
+            Shift_i = (Key[i % len(Key)] - 'A')<br/>
+            Decryption: P_i = (C_i - Shift_i + 26) mod 26
+          </div>
+          <div class="text-xs text-slate-400 font-mono space-y-1">
+            <div class="text-white font-bold">Example with Key "CAT" (C=2, A=0, T=19):</div>
+            <div>Plaintext: <span class="text-emeraldGlow">A T T A C K</span></div>
+            <div>Keystream: C A T C A T</div>
+            <div>A(0)+2=C | T(19)+0=T | T(19)+19=M | A(0)+2=C | C(2)+0=C | K(10)+19=D</div>
+            <div>Ciphertext: <span class="text-gold">C T M C C D</span></div>
+          </div>
+          <p class="text-xs text-slate-400">
+            Notice how the two 'T's in "ATTACK" encrypted to two different letters ('T' and 'M')!
+          </p>
+        </div>
+
+        <!-- Byte Pipelines -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-neonPurple">4. Encodings: Hex & Base64</h3>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Data Representation</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Encoding is not encryption; it provides <em>representation</em> rather than confidentiality. Attackers and defenders constantly convert bytes across formats:
+          </p>
+          <ul class="text-xs text-slate-400 space-y-1.5 list-disc pl-4 font-mono">
+            <li><strong>Hexadecimal (Base16):</strong> Uses digits 0-9 and a-f. Every single byte is represented by exactly two hex characters (e.g., 'A' = 65 = 0x41).</li>
+            <li><strong>Base64:</strong> Takes 3 bytes (24 bits) and groups them into four 6-bit numbers, mapped to A-Z, a-z, 0-9, +, /. If bytes do not divide evenly by 3, '=' padding characters are appended to the end.</li>
+          </ul>
+          <div class="bg-obsidian border border-slate-800 p-2.5 rounded-xl font-mono text-xs text-purple-300">
+            Text: "FLAG"<br/>
+            Hex: 466c6167<br/>
+            Base64: RkxBRw==
+          </div>
+        </div>
+
+        <!-- RSA Asymmetric -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 md:col-span-2 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-crimson">5. RSA Public-Key Cryptography</h3>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Asymmetric Math</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            RSA relies on the mathematical difficulty of factoring the product of two large prime numbers. The mathematical mechanics follow a specific order:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+            <div class="bg-obsidian border border-slate-800 p-3 rounded-xl space-y-1">
+              <span class="text-gold font-bold block">1. Key Generation</span>
+              <div>Select primes: p, q</div>
+              <div>Modulus: n = p * q</div>
+              <div>Totient: φ(n) = (p-1)*(q-1)</div>
+            </div>
+            <div class="bg-obsidian border border-slate-800 p-3 rounded-xl space-y-1">
+              <span class="text-cyberCyan font-bold block">2. Private Key (d)</span>
+              <div>Choose e coprime to φ(n)</div>
+              <div>Solve for d:</div>
+              <div>(d * e) ≡ 1 (mod φ(n))</div>
+            </div>
+            <div class="bg-obsidian border border-slate-800 p-3 rounded-xl space-y-1">
+              <span class="text-emeraldGlow font-bold block">3. Decryption</span>
+              <div>Cipher integer: c</div>
+              <div>Recover message m:</div>
+              <div>m = (c^d) mod n</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: PYTHON TOOLKIT                     -->
+    <!-- ========================================== -->
+    <section id="viewPython" class="hidden space-y-6">
+      <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+        <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+          <span>🐍</span> Python Cryptanalysis Knowledge Bank
+        </h2>
+        <p class="text-slate-400 text-sm">
+          These templates show how to write cryptanalysis algorithms in Python. They run on <strong>dummy sample data</strong>. To solve your missions, copy the code and pass your intercepted ciphertext into the functions!
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        
+        <!-- Python Caesar -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-gold text-base">Caesar Cipher 26-Shift Brute-Forcer</h3>
+            <button onclick="copySnippet('pyCaesarCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Tests all 26 possible shifts simultaneously and prints the output for each shift.
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="pyCaesarCode" class="text-cyan-300">def brute_force_caesar(cipher_text):
+    for shift in range(26):
+        plain = []
+        for char in cipher_text:
+            if char.isalpha():
+                base = ord('A') if char.isupper() else ord('a')
+                # Shift backwards to decrypt
+                plain.append(chr((ord(char) - base - shift) % 26 + base))
+            else:
+                plain.append(char)
+        print(f"[Shift {shift:02d}]: {''.join(plain)}")
+
+# Generic practice sample ("THE QUICK BROWN FOX..." shifted by 3):
+sample_cipher = "WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ"
+print("--- Testing Sample String ---")
+brute_force_caesar(sample_cipher)
+
+# TODO FOR STUDENT AGENT:
+# Call brute_force_caesar() passing the intercepted ciphertext from Chapter 1!</code></pre>
+          </div>
+        </div>
+
+        <!-- Python Atbash -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-cyberCyan text-base">Atbash Reciprocal Inverter</h3>
+            <button onclick="copySnippet('pyAtbashCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Translates every letter to its inverse counterpart across the alphabet.
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="pyAtbashCode" class="text-emerald-300">def solve_atbash(cipher_text):
+    result = []
+    for char in cipher_text:
+        if 'A' <= char <= 'Z':
+            result.append(chr(ord('Z') - (ord(char) - ord('A'))))
+        elif 'a' <= char <= 'z':
+            result.append(chr(ord('z') - (ord(char) - ord('a'))))
+        else:
+            result.append(char)
+    return "".join(result)
+
+# Generic practice sample ("THIS IS A TEST MESSAGE"):
+sample_cipher = "GSRH RH Z GVHG NVHHZTV"
+print("Decoded sample:", solve_atbash(sample_cipher))
+
+# TODO FOR STUDENT AGENT:
+# Pass the ciphertext from Chapter 2 into solve_atbash() to reveal the secret!</code></pre>
+          </div>
+        </div>
+
+        <!-- Python Vigenère -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-emeraldGlow text-base">Vigenère Decryption Routine</h3>
+            <button onclick="copySnippet('pyVigCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Decrypts polyalphabetic ciphertext using a known or suspected keyword.
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="pyVigCode" class="text-amber-300">def decrypt_vigenere(cipher_text, key):
+    key = key.upper()
+    plain = []
+    key_idx = 0
+    for char in cipher_text:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            shift = ord(key[key_idx % len(key)]) - ord('A')
+            plain.append(chr((ord(char) - base - shift + 26) % 26 + base))
+            key_idx += 1
+        else:
+            plain.append(char)
+    return "".join(plain)
+
+# Generic practice sample ("ATTACK AT DAWN" encrypted with key "LEMON"):
+sample_cipher = "LXFOPV EF RNHR"
+sample_key = "LEMON"
+print("Decoded sample:", decrypt_vigenere(sample_cipher, sample_key))
+
+# TODO FOR STUDENT AGENT:
+# 1. Inspect the Chapter 3 dossier to deduce the predator keyword.
+# 2. Call decrypt_vigenere() with the Chapter 3 ciphertext and your keyword!</code></pre>
+          </div>
+        </div>
+
+        <!-- Python Pipeline -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-neonPurple text-base">Hex to Text & Base64 Decoding Pipeline</h3>
+            <button onclick="copySnippet('pyPipeCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Converts raw hexadecimal bytes to an ASCII string, then decodes the resulting Base64 stream.
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="pyPipeCode" class="text-purple-300">import base64
+
+# Generic practice sample (Hex encoding of "SGVsbG8gV29ybGQ=" which is Base64 for "Hello World"):
+sample_hex = "5347567362473867563239796247513d"
+
+# Step 1: Decode hex bytes to intermediate ASCII string
+intermediate_str = bytes.fromhex(sample_hex).decode('utf-8')
+print("Step 1 (Base64 string):", intermediate_str)
+
+# Step 2: Decode Base64 to discover original plaintext
+decoded_text = base64.b64decode(intermediate_str).decode('utf-8')
+print("Step 2 (Plaintext):", decoded_text)
+
+# TODO FOR STUDENT AGENT:
+# Replace sample_hex with the long hex string from Chapter 4!</code></pre>
+          </div>
+        </div>
+
+        <!-- Python RSA -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-crimson text-base">RSA Key Solver & Modular Exponentiation</h3>
+            <button onclick="copySnippet('pyRsaCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Calculates private exponent `d` and decrypts ciphertext integer `c` via modular exponentiation.
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="pyRsaCode" class="text-rose-300"># Toy practice parameters (NOT the challenge values):
+# Encrypting message m = 9 with primes p = 5, q = 11:
+sample_p = 5
+sample_q = 11
+sample_e = 3
+sample_c = 14
+
+# 1. Modulus and Totient
+n = sample_p * sample_q
+phi = (sample_p - 1) * (sample_q - 1)
+
+# 2. Modular inverse: d * e ≡ 1 (mod phi)
+d = pow(sample_e, -1, phi)
+print(f"Calculated Sample Private Key (d): {d}")
+
+# 3. Decrypt: m = (c ^ d) % n
+m = pow(sample_c, d, n)
+print(f"Decrypted Sample Secret (m): {m}")
+
+# TODO FOR STUDENT AGENT:
+# Plug in the primes p, q, public exponent e, and ciphertext c from Chapter 5!</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: JAVASCRIPT BROWSER CONSOLE BANK    -->
+    <!-- ========================================== -->
+    <section id="viewJavascript" class="hidden space-y-6">
+      <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+        <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+          <span>⚡</span> JavaScript Browser Console Knowledge Bank
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Press <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-cyberCyan font-mono text-xs">Cmd + Option + J</kbd> (Mac) or <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-cyberCyan font-mono text-xs">F12</kbd> (Windows) to open the DevTools Console. These templates demonstrate how to decrypt with JavaScript using <strong>practice samples</strong>.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- JS Caesar -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-gold text-base">JS Console: Caesar 26-Shift Brute-Forcer</h3>
+            <button onclick="copySnippet('jsCaesarCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Paste into DevTools Console to log all 26 shift variations:
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="jsCaesarCode" class="text-cyan-300">function bruteForceCaesar(cipher) {
+  for (let s = 0; s < 26; s++) {
+    let plain = cipher.replace(/[a-zA-Z]/g, c => {
+      let base = c <= 'Z' ? 65 : 97;
+      return String.fromCharCode(((c.charCodeAt(0) - base - s + 52) % 26) + base);
+    });
+    console.log(`%c[Shift ${String(s).padStart(2, '0')}]:`, "color: #00ffcc", plain);
+  }
+}
+
+// Generic practice sample:
+bruteForceCaesar("WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ");
+
+// TODO FOR STUDENT AGENT:
+// Run bruteForceCaesar("YOUR_CHAPTER_1_CIPHERTEXT_HERE") in the console!</code></pre>
+          </div>
+        </div>
+
+        <!-- JS Atbash -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-cyberCyan text-base">JS Console: Atbash Inversion One-Liner</h3>
+            <button onclick="copySnippet('jsAtbashCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Inverts alphabetic characters across ASCII boundaries:
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="jsAtbashCode" class="text-emerald-300">function solveAtbash(cipher) {
+  return cipher.replace(/[a-zA-Z]/g, c => {
+    let isUpper = c <= 'Z';
+    let base = isUpper ? 65 : 97;
+    return String.fromCharCode((25 - (c.charCodeAt(0) - base)) + base);
+  });
+}
+
+// Generic practice sample:
+console.log(solveAtbash("GSRH RH Z GVHG NVHHZTV"));
+
+// TODO FOR STUDENT AGENT:
+// Run solveAtbash("YOUR_CHAPTER_2_CIPHERTEXT_HERE") in the console!</code></pre>
+          </div>
+        </div>
+
+        <!-- JS Vigenère -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-emeraldGlow text-base">JS Console: Vigenère Solver Function</h3>
+            <button onclick="copySnippet('jsVigCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Pass the ciphertext and keyword into this function in the console:
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="jsVigCode" class="text-amber-300">function solveVigenere(cipher, key) {
+  key = key.toUpperCase();
+  let kIdx = 0;
+  return cipher.replace(/[a-zA-Z]/g, c => {
+    let isUpper = c <= 'Z';
+    let base = isUpper ? 65 : 97;
+    let shift = key.charCodeAt(kIdx % key.length) - 65;
+    kIdx++;
+    return String.fromCharCode(((c.charCodeAt(0) - base - shift + 26) % 26) + base);
+  });
+}
+
+// Generic practice sample:
+console.log(solveVigenere("LXFOPV EF RNHR", "LEMON"));
+
+// TODO FOR STUDENT AGENT:
+// Pass the Chapter 3 ciphertext and your deduced animal keyword to solveVigenere()!</code></pre>
+          </div>
+        </div>
+
+        <!-- JS Pipeline -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-neonPurple text-base">JS Console: Hex to ASCII + atob() Decode</h3>
+            <button onclick="copySnippet('jsPipeCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Converts hex pairs to chars, then passes the result to the browser's native `atob()` function:
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="jsPipeCode" class="text-purple-300">function decodeHexBase64(hexStr) {
+  // 1. Convert pairs of hex characters into an ASCII string
+  const base64Str = hexStr.match(/.{1,2}/g)
+    .map(byte => String.fromCharCode(parseInt(byte, 16)))
+    .join('');
+  console.log("Step 1 (Base64 string):", base64Str);
+
+  // 2. Decode the Base64 string with the browser's native atob() function
+  const plain = atob(base64Str);
+  return plain;
+}
+
+// Generic practice sample ("Hello World"):
+console.log("Result:", decodeHexBase64("5347567362473867563239796247513d"));
+
+// TODO FOR STUDENT AGENT:
+// Pass the Chapter 4 hex string into decodeHexBase64() in your console!</code></pre>
+          </div>
+        </div>
+
+        <!-- JS RSA -->
+        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-crimson text-base">JS Console: RSA Private Key Finder & Decrypter</h3>
+            <button onclick="copySnippet('jsRsaCode')" class="text-xs font-mono text-cyberCyan hover:underline">📋 Copy Code</button>
+          </div>
+          <p class="text-xs text-slate-400 mb-3 font-mono">
+            Searches for modular inverse `d` and executes BigInt modular exponentiation:
+          </p>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4 overflow-x-auto">
+            <pre><code id="jsRsaCode" class="text-rose-300">function solveRSA(p, q, e, c) {
+  const n = p * q;
+  const phi = (p - 1) * (q - 1);
+
+  // 1. Find private key exponent d where (d * e) % phi === 1
+  let d = 1;
+  while ((d * e) % phi !== 1) {
+    d++;
+  }
+  console.log("Computed Private Key d:", d);
+
+  // 2. Compute m = (c ^ d) mod n using BigInt
+  let b = BigInt(c), exp = BigInt(d), mod = BigInt(n);
+  let result = 1n;
+  b = b % mod;
+  while (exp > 0n) {
+    if (exp % 2n === 1n) result = (result * b) % mod;
+    b = (b * b) % mod;
+    exp = exp / 2n;
+  }
+
+  const m = Number(result);
+  console.log("Decrypted Message Integer m:", m);
+  return { m, d };
+}
+
+// Generic practice sample (p=5, q=11, e=3, c=14):
+console.log("Sample test:", solveRSA(5, 11, 3, 14));
+
+// TODO FOR STUDENT AGENT:
+// Run solveRSA(p, q, e, c) with the Chapter 5 parameters to find the secret m and d!</code></pre>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 text-center text-xs font-mono text-slate-500 pb-4">
+    Ethical Hackers Club • Operation Black Book • Manual Cryptanalysis Lab
+  </footer>
+
+  <!-- Victory Celebration Modal -->
+  <div id="victoryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardBg border border-gold/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 text-center shadow-2xl relative">
+      <div class="w-16 h-16 rounded-full bg-gold/20 text-gold flex items-center justify-center mx-auto text-3xl mb-4 border border-gold/40">
+        🏆
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Black Book Decrypted!</h2>
+      <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+        Outstanding performance, Agent. You successfully recovered all five encrypted transmissions using your own cryptanalysis scripts and logical deduction.
+      </p>
+      
+      <div class="bg-obsidian border border-slate-800 rounded-xl p-4 font-mono text-xs text-left text-slate-300 mb-6 space-y-1">
+        <div class="text-gold font-bold">OPERATIONAL DOSSIER:</div>
+        <div>• Status: <span class="text-emeraldGlow font-semibold">5 of 5 Targets Verified</span></div>
+        <div>• Clearance: <span class="text-cyberCyan font-semibold">Master Cryptanalyst</span></div>
+        <div>• Assistance Level: <span class="text-white">Zero Automation Relied Upon</span></div>
+      </div>
+
+      <button onclick="closeVictoryModal()" class="w-full py-3 bg-gold hover:bg-amber-400 text-obsidian font-mono font-bold text-sm rounded-xl transition-all shadow-lg">
+        CONTINUE LAB
+      </button>
+    </div>
+  </div>
+
+  <!-- Operations JavaScript Logic -->
+  <script>
+    // --- STAGE DEFINITIONS ---
+    const stages = {
+      1: {
+        id: 1,
+        title: "Chapter 1: The Centurion's Crypt",
+        category: "CATEGORY: CAESAR SHIFT",
+        difficulty: "TIER 1 • NOVICE",
+        difficultyColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+        story: "An intercepted transmission found in an encrypted dispatch log. The letters have been shifted down the Latin alphabet by an unknown offset. Find the shift and read the message.",
+        rawCipher: "AOL LHNSL MSPLZ HA TPKUPNOA. AOL ZLJYLA WHZZRLF PZ MSHN{QBSPBZ_RULD_AOL_HSWOHILA}",
+        hint: "Look for frequent 3-letter words like 'AOL'. If AOL = THE, notice that 'A' is 7 positions before 'T' in the alphabet. Try shifting by 7!",
+        validFlags: [
+          "FLAG{JULIUS_KNEW_THE_ALPHABET}",
+          "THE EAGLE FLIES AT MIDNIGHT. THE SECRET PASSKEY IS FLAG{JULIUS_KNEW_THE_ALPHABET}"
+        ]
+      },
+      2: {
+        id: 2,
+        title: "Chapter 2: The Starlight Mirror",
+        category: "CATEGORY: ATBASH MIRROR",
+        difficulty: "TIER 2 • NOVICE",
+        difficultyColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+        story: "Recovered from a reflective cipher ledger. The characters have been inverted across the alphabet (A becomes Z, B becomes Y, C becomes X, etc.). Invert the alphabet to recover the secret.",
+        rawCipher: "GSV NRIILI IVEVZOH DSZG ORTSG XLMXVZOH. GSV UOZT RH UOZT{ZMXRVMG_HXIRYVH_IVUOVXG}",
+        hint: "This is Atbash. Every letter swaps with its opposite: A ↔ Z, B ↔ Y. Notice how 'GSV' reverses to 'THE' and 'UOZT' reverses to 'FLAG'.",
+        validFlags: [
+          "FLAG{ANCIENT_SCRIBES_REFLECT}",
+          "THE MIRROR REVEALS WHAT LIGHT CONCEALS. THE FLAG IS FLAG{ANCIENT_SCRIBES_REFLECT}"
+        ]
+      },
+      3: {
+        id: 3,
+        title: "Chapter 3: The Keystone Enigma",
+        category: "CATEGORY: VIGENÈRE POLYALPHABETIC",
+        difficulty: "TIER 3 • INTERMEDIATE",
+        difficultyColor: "text-cyberCyan bg-cyberCyan/10 border-cyberCyan/20",
+        story: "Simple frequency analysis fails on this intercept because multiple alphabets were used. A side note in the margin mentions: 'The keyword is the animal that hunts in the dark: PANTHER'.",
+        rawCipher: "IHR DLCNDRQ BZ JFJNQ. MOI WAAT BZ JCPG{CHSCSXUF_TUH_SAAVLL_AZC}",
+        hint: "Use keyword 'PANTHER'. In Vigenère, each letter of the keyword represents a shift value (P=15, A=0, N=13, etc.). Use the Python or JS Console script to decrypt it!",
+        validFlags: [
+          "FLAG{POLYBIUS_AND_BLAISE_WIN}",
+          "THE KEYWORD IS FOUND. THE FLAG IS FLAG{POLYBIUS_AND_BLAISE_WIN}"
+        ]
+      },
+      4: {
+        id: 4,
+        title: "Chapter 4: The Fragmented Byte-Stream",
+        category: "CATEGORY: HEX & BASE64 PIPELINE",
+        difficulty: "TIER 4 • ADVANCED",
+        difficultyColor: "text-neonPurple bg-purple-500/10 border-purple-500/20",
+        story: "Extracted from a memory buffer dump. The message was encoded into ASCII bytes, rendered as a continuous hexadecimal string, and concealed within a Base64 stream.",
+        rawCipher: "526b78425233744357565246553139475445395858315249556b39565230686655306c4d53554e50546e303d",
+        hint: "Step 1: Convert the hex pairs (52 6b 78...) into characters. Step 2: The output ends in '=' (a Base64 signature!). Run that through Base64 decode to reveal the flag.",
+        validFlags: [
+          "FLAG{BYTES_FLOW_THROUGH_SILICON}",
+          "flag{bytes_flow_through_silicon}"
+        ]
+      },
+      5: {
+        id: 5,
+        title: "Chapter 5: The Sentinel's Vault (RSA Math)",
+        category: "CATEGORY: ASYMMETRIC RSA",
+        difficulty: "TIER 5 • PRO MASTER",
+        difficultyColor: "text-crimson bg-crimson/10 border-crimson/20",
+        story: "The vault requires solving the private key 'd' and decrypting the secret code 'm' using asymmetric RSA mathematics. Intercepted parameters: Primes p = 13, q = 19. Public Exponent e = 5. Intercepted Cipher integer c = 74. Find m = (c^d) mod (p*q). The flag is FLAG{RSA_m_d}.",
+        rawCipher: "PARAMS: p = 13, q = 19, e = 5, c = 74. Solve for private key d where (d * e) ≡ 1 (mod (p-1)*(q-1)). Then compute m = c^d mod (p*q). Flag: FLAG{RSA_m_d}",
+        hint: "n = 13*19 = 247. φ(n) = 12*18 = 216. Find d where (d * 5) % 216 == 1. Then compute (74 ^ d) % 247. Run the Python or JS console script to do the math instantly!",
+        validFlags: [
+          "FLAG{RSA_42_173}",
+          "FLAG{42_173}",
+          "42_173",
+          "42",
+          "173"
+        ]
+      }
+    };
+
+    let currentStageId = 1;
+    let completedStages = new Set();
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    // --- AUDIO EFFECTS (Synthesizer via Web Audio API) ---
+    function playBeep(freq = 440, duration = 0.15, type = 'sine') {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Fallback for strict browser autoplay
+      }
+    }
+
+    function playSuccessTone() {
+      playBeep(523.25, 0.1, 'triangle');
+      setTimeout(() => playBeep(659.25, 0.1, 'triangle'), 90);
+      setTimeout(() => playBeep(783.99, 0.2, 'triangle'), 180);
+      setTimeout(() => playBeep(1046.50, 0.3, 'triangle'), 270);
+    }
+
+    function playErrorTone() {
+      playBeep(200, 0.15, 'sawtooth');
+      setTimeout(() => playBeep(170, 0.2, 'sawtooth'), 120);
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const el = document.getElementById('soundStatus') || document.getElementById('audioToggle');
+      el.textContent = audioEnabled ? '🔊 Audio ON' : '🔇 Audio OFF';
+      el.className = audioEnabled ? 'text-emeraldGlow font-semibold cursor-pointer' : 'text-slate-500 font-semibold cursor-pointer';
+    }
+
+    // --- VIEW CONTROLLER ---
+    function switchView(viewName) {
+      const views = ['challenges', 'mechanics', 'python', 'javascript'];
+      views.forEach(v => {
+        const el = document.getElementById(`view${v.charAt(0).toUpperCase() + v.slice(1)}`);
+        const btn = document.getElementById(`viewBtn${v.charAt(0).toUpperCase() + v.slice(1)}`);
+        if (v === viewName) {
+          el.classList.remove('hidden');
+          btn.className = "px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cyberCyan/15 border-cyberCyan text-cyberCyan shadow-sm transition-all";
+        } else {
+          el.classList.add('hidden');
+          btn.className = "px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white transition-all";
+        }
+      });
+      playBeep(580, 0.05, 'sine');
+    }
+
+    // --- STAGE SWITCHER ---
+    function switchStage(stageNum) {
+      currentStageId = stageNum;
+      const stage = stages[stageNum];
+
+      // Update Tab Styles
+      document.querySelectorAll('.stage-tab').forEach((tab, index) => {
+        const id = index + 1;
+        if (id === stageNum) {
+          tab.className = "stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cyberCyan/15 border-cyberCyan text-cyberCyan shadow-sm";
+        } else {
+          tab.className = "stage-tab px-4 py-2.5 rounded-lg font-mono text-xs sm:text-sm font-bold flex items-center gap-2 border transition-all whitespace-nowrap bg-cardBg border-slate-800 text-slate-400 hover:border-slate-700";
+        }
+      });
+
+      // Update Mission Details
+      document.getElementById('stageCategoryBadge').textContent = stage.category;
+      document.getElementById('stageDifficultyBadge').textContent = stage.difficulty;
+      document.getElementById('stageDifficultyBadge').className = `text-xs font-mono font-bold px-2 py-0.5 rounded border ${stage.difficultyColor}`;
+      document.getElementById('stageTitle').textContent = stage.title;
+      document.getElementById('stageStory').textContent = stage.story;
+      document.getElementById('cipherDisplay').textContent = stage.rawCipher;
+      document.getElementById('clueContent').textContent = stage.hint;
+      
+      // Reset hints
+      document.getElementById('clueContent').classList.add('hidden');
+      document.getElementById('clueArrow').textContent = '▶';
+
+      // Reset form
+      document.getElementById('flagInput').value = '';
+      document.getElementById('resultFeedback').classList.add('hidden');
+
+      playBeep(520, 0.05, 'sine');
+    }
+
+    // --- FLAG CHECKING ---
+    function handleFlagSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('flagInput').value.trim();
+      const stage = stages[currentStageId];
+      const feedback = document.getElementById('resultFeedback');
+
+      if (!input) return;
+
+      const normalizedInput = input.toUpperCase().replace(/\s+/g, ' ');
+      const isCorrect = stage.validFlags.some(flag => {
+        return normalizedInput.includes(flag.toUpperCase()) || normalizedInput === flag.toUpperCase();
+      });
+
+      if (isCorrect) {
+        completedStages.add(currentStageId);
+        playSuccessTone();
+
+        feedback.className = "rounded-xl p-3 font-mono text-xs sm:text-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 block";
+        feedback.innerHTML = `<strong>ACCESS GRANTED!</strong> Decryption verified for Chapter ${currentStageId}.`;
+
+        const badge = document.getElementById(`badge${currentStageId}`);
+        badge.textContent = "✓ SOLVED";
+        badge.className = "text-[10px] ml-1 px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold";
+
+        updateClearanceMeter();
+
+        if (completedStages.size === 5) {
+          setTimeout(showVictoryModal, 600);
+        }
+      } else {
+        playErrorTone();
+        feedback.className = "rounded-xl p-3 font-mono text-xs sm:text-sm bg-crimson/10 border border-crimson/30 text-crimson block";
+        feedback.innerHTML = `<strong>DECRYPTION FAILED.</strong> Invalid flag sequence. Double check your script output or decoding step.`;
+      }
+    }
+
+    function updateClearanceMeter() {
+      const count = completedStages.size;
+      const pct = (count / 5) * 100;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+      document.getElementById('progressText').textContent = `${count} / 5 SOLVED`;
+
+      const ranks = ["Initiate", "Apprentice", "Decoder", "Codebreaker", "Cryptanalyst", "Master Cryptanalyst"];
+      document.getElementById('tierRank').textContent = ranks[count];
+    }
+
+    // --- UTILITIES ---
+    function copyCurrentCipher() {
+      const text = stages[currentStageId].rawCipher;
+      copyToClipboard(text, "Ciphertext copied to clipboard!");
+    }
+
+    function copySnippet(elementId) {
+      const code = document.getElementById(elementId).innerText;
+      copyToClipboard(code, "Code snippet copied!");
+    }
+
+    function copyToClipboard(text, msg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => fallbackCopy(text, msg));
+      } else {
+        fallbackCopy(text, msg);
+      }
+    }
+
+    function fallbackCopy(text, msg) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(msg);
+      } catch (err) {
+        console.error('Fallback copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showToast(msg) {
+      playBeep(750, 0.05, 'triangle');
+      const feedback = document.getElementById('resultFeedback');
+      feedback.className = "rounded-xl p-3 font-mono text-xs sm:text-sm bg-cyberCyan/10 border border-cyberCyan/30 text-cyberCyan block";
+      feedback.textContent = msg;
+      setTimeout(() => feedback.classList.add('hidden'), 2200);
+    }
+
+    function toggleClue() {
+      const clue = document.getElementById('clueContent');
+      const arrow = document.getElementById('clueArrow');
+      if (clue.classList.contains('hidden')) {
+        clue.classList.remove('hidden');
+        arrow.textContent = '▼';
+      } else {
+        clue.classList.add('hidden');
+        arrow.textContent = '▶';
+      }
+    }
+
+    function showVictoryModal() {
+      document.getElementById('victoryModal').classList.remove('hidden');
+      document.getElementById('victoryModal').classList.add('flex');
+    }
+
+    function closeVictoryModal() {
+      document.getElementById('victoryModal').classList.add('hidden');
+      document.getElementById('victoryModal').classList.remove('flex');
+    }
+
+    window.onload = function() {
+      switchStage(1);
+    };
+  </script>
+</body>
+</html>
